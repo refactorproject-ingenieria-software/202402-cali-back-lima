@@ -16,4 +16,19 @@ describe('Given a validateCreditCard function', () => {
       );
     });
   });
+  describe('When it receives a credit card number with less than 16 digits', () => {
+    test('Then it should return that the credit card is invalid and an error message', () => {
+      const creditCardNumber = '123';
+      const errorMessages = 'The card must have at least 16 digits';
+
+      const expectedResult = {
+        isValid: false,
+        errors: { lengthError: errorMessages },
+      };
+
+      expect(validateCreditCard(creditCardNumber)).toStrictEqual(
+        expectedResult,
+      );
+    });
+  });
 });
