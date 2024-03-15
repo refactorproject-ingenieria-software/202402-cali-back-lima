@@ -1,6 +1,8 @@
+import exp from 'constants';
 import validateCreditCard from './validateCreditCard';
 
 describe('Given a validateCreditCard function', () => {
+  const validExpiryDate = '12/24';
   test('It should be defined', () => {
     expect(validateCreditCard).toBeDefined();
   });
@@ -11,9 +13,9 @@ describe('Given a validateCreditCard function', () => {
 
       const expectedResult = { isValid: true };
 
-      expect(validateCreditCard(creditCardNumber)).toStrictEqual(
-        expectedResult,
-      );
+      expect(
+        validateCreditCard(creditCardNumber, validExpiryDate),
+      ).toStrictEqual(expectedResult);
     });
   });
 
@@ -27,9 +29,9 @@ describe('Given a validateCreditCard function', () => {
         errors: { lengthError: errorMessages },
       };
 
-      expect(validateCreditCard(creditCardNumber)).toStrictEqual(
-        expectedResult,
-      );
+      expect(
+        validateCreditCard(creditCardNumber, validExpiryDate),
+      ).toStrictEqual(expectedResult);
     });
   });
 
@@ -45,8 +47,33 @@ describe('Given a validateCreditCard function', () => {
       };
 
       expect(
-        validateCreditCard(nonValidCreditCardNumber).errors.luhnsError,
+        validateCreditCard(nonValidCreditCardNumber, validExpiryDate).errors
+          .luhnsError,
       ).toStrictEqual(expectedResult.errors.luhnsError);
+    });
+  });
+
+  describe('When it receives an expiry date that is not valid', () => {
+    test('Then it should return an error message equal to "The card must have a valid expiration date"', () => {
+      const creditCardNumber = '123432434534523523';
+      const expiryDate = '12/20';
+      const expiryDateErrorMessage =
+        'The card must have a valid expiration date';
+
+      const expectedResult = {
+        isValid: false,
+        errors: { expiryDateError: expiryDateErrorMessage },
+      };
+
+      const { isValid, errors } = validateCreditCard(
+        creditCardNumber,
+        expiryDate,
+      );
+
+      expect(isValid).toStrictEqual(expectedResult.isValid);
+      expect(errors.expiryDateError).toStrictEqual(
+        expectedResult.errors.expiryDateError,
+      );
     });
   });
 });

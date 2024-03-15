@@ -1,28 +1,8 @@
 interface Errors {
   lengthError?: string;
   luhnsError?: string;
+  expiryDateError?: string;
 }
-
-const validateCreditCard = (creditCardNumber: string) => {
-  let errors: Errors;
-  const isLuhnValid = validateLuhnsAlgorithm(creditCardNumber);
-
-  if (creditCardNumber.length < 16) {
-    errors = { lengthError: 'The card must have at least 16 digits' };
-    return { isValid: false, errors };
-  }
-
-  if (!isLuhnValid) {
-    errors = {
-      luhnsError: 'The card is not valid according to the Luhn algorithm',
-    };
-    return { isValid: false, errors };
-  }
-
-  return { isValid: true };
-};
-
-export default validateCreditCard;
 
 const validateLuhnsAlgorithm = (creditCardNumber: string): boolean => {
   let sum = 0;
@@ -45,3 +25,25 @@ const validateLuhnsAlgorithm = (creditCardNumber: string): boolean => {
 
   return sum % 10 === 0;
 };
+
+const validateCreditCard = (creditCardNumber: string, expiryDate: string) => {
+  let errors: Errors;
+  expiryDate;
+  const isLuhnValid = validateLuhnsAlgorithm(creditCardNumber);
+
+  if (creditCardNumber.length < 16) {
+    errors = { lengthError: 'The card must have at least 16 digits' };
+    return { isValid: false, errors };
+  }
+
+  if (!isLuhnValid) {
+    errors = {
+      luhnsError: 'The card is not valid according to the Luhn algorithm',
+    };
+    return { isValid: false, errors };
+  }
+
+  return { isValid: true };
+};
+
+export default validateCreditCard;
