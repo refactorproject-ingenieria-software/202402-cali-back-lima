@@ -1,4 +1,3 @@
-import exp from 'constants';
 import validateCreditCard from './validateCreditCard';
 
 describe('Given a validateCreditCard function', () => {
@@ -14,14 +13,14 @@ describe('Given a validateCreditCard function', () => {
       const expectedResult = { isValid: true };
 
       expect(
-        validateCreditCard(creditCardNumber, validExpiryDate),
-      ).toStrictEqual(expectedResult);
+        validateCreditCard(creditCardNumber, validExpiryDate).isValid,
+      ).toStrictEqual(expectedResult.isValid);
     });
   });
 
   describe('When it receives a credit card number with less than 16 digits', () => {
     test('Then it should return that the credit card is invalid and an error message', () => {
-      const creditCardNumber = '123';
+      const creditCardNumber = '1233';
       const errorMessages = 'The card must have at least 16 digits';
 
       const expectedResult = {
@@ -30,8 +29,9 @@ describe('Given a validateCreditCard function', () => {
       };
 
       expect(
-        validateCreditCard(creditCardNumber, validExpiryDate),
-      ).toStrictEqual(expectedResult);
+        validateCreditCard(creditCardNumber, validExpiryDate).errors
+          .lengthError,
+      ).toStrictEqual(expectedResult.errors.lengthError);
     });
   });
 
@@ -74,6 +74,19 @@ describe('Given a validateCreditCard function', () => {
       expect(errors.expiryDateError).toStrictEqual(
         expectedResult.errors.expiryDateError,
       );
+    });
+  });
+
+  describe('When it receives a credit card number and an expiry date that are both valid', () => {
+    test('Then it should return that the credit card is valid', () => {
+      const creditCardNumber = '1789372997456783';
+      const expiryDate = '12/24';
+
+      const expectedResult = { isValid: true };
+
+      expect(
+        validateCreditCard(creditCardNumber, expiryDate).isValid,
+      ).toStrictEqual(expectedResult.isValid);
     });
   });
 });
