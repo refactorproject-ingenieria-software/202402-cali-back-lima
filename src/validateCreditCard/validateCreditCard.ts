@@ -1,4 +1,4 @@
-interface Errors {
+export interface ErrorsStructure {
   lengthError?: string;
   luhnsError?: string;
   expiryDateError?: string;
@@ -35,11 +35,10 @@ const validateExpiryDate = (expiryDate: string): boolean => {
 };
 
 const validateCreditCard = (creditCardNumber: string, expiryDate: string) => {
-  const errors: Errors = {};
+  const errors: ErrorsStructure = {};
   const isLuhnValid = validateLuhnsAlgorithm(creditCardNumber);
   const isExpiryDateValid = validateExpiryDate(expiryDate);
 
-  debugger;
   if (creditCardNumber.length < 16) {
     errors.lengthError = 'The card must have at least 16 digits';
   }
