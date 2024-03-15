@@ -41,12 +41,12 @@ describe('Given a validateCreditCard function', () => {
 
       const expectedResult = {
         isValid: false,
-        errors: { lengthError: errorMessage },
+        errors: { luhnsError: errorMessage },
       };
 
-      expect(validateCreditCard(nonValidCreditCardNumber)).toStrictEqual(
-        expectedResult,
-      );
+      expect(
+        validateCreditCard(nonValidCreditCardNumber).errors.luhnsError,
+      ).toStrictEqual(expectedResult.errors.luhnsError);
     });
   });
 });

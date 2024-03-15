@@ -1,5 +1,10 @@
+interface Errors {
+  lengthError?: string;
+  luhnsError?: string;
+}
+
 const validateCreditCard = (creditCardNumber: string) => {
-  let errors;
+  let errors: Errors;
   const isLuhnValid = validateLuhnsAlgorithm(creditCardNumber);
 
   if (creditCardNumber.length < 16) {
@@ -9,7 +14,7 @@ const validateCreditCard = (creditCardNumber: string) => {
 
   if (!isLuhnValid) {
     errors = {
-      lengthError: 'The card is not valid according to the Luhn algorithm',
+      luhnsError: 'The card is not valid according to the Luhn algorithm',
     };
     return { isValid: false, errors };
   }
