@@ -1,6 +1,9 @@
 import { validatePassword } from './validatePassword';
 
 describe('GIVEN a validate password function', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test('THEN it should exist', () => {
     expect(validatePassword).toBeDefined();
   });
@@ -13,7 +16,7 @@ describe('GIVEN a validate password function', () => {
     });
 
     test('THEN it should has at least 8 characters', () => {
-      expect(validatePassword('mypass')).toEqual({
+      expect(validatePassword('mypass')).toContain({
         isValid: false,
         errorMessage: ['Password must be at least 8 characters'],
       });
