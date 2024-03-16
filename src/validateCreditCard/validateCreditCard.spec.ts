@@ -79,7 +79,7 @@ describe('Given a validateCreditCard function', () => {
 
   describe('When it receives a credit card number and an expiry date that are both valid', () => {
     test('Then it should return that the credit card is valid', () => {
-      const creditCardNumber = '1789372997456783';
+      const creditCardNumber = '1234412345689783';
       const expiryDate = '12/24';
 
       const expectedResult = { isValid: true };

@@ -4,31 +4,54 @@ export interface ErrorsStructure {
   expiryDateError?: string;
 }
 
-const validateLuhnsAlgorithm = (creditCardNumber: string): boolean => {
-  let sum = 0;
-  let isSecond = false;
+const doubleDigitsAccordingLuhnsAlgorithm = (number: string): number[] => {
+  const creditCardNumbers: number[] = [];
+  const reverseNumbers: string[] = number.split('').reverse();
 
-  for (let position = creditCardNumber.length - 1; position >= 0; position--) {
-    let digit = parseInt(creditCardNumber[position]);
+  for (let position = 0; position < reverseNumbers.length; position += 1) {
+    let digit = +reverseNumbers[position];
 
-    if (isSecond) {
-      digit = digit * 2;
+    if (position % 2 === 1) {
+      digit *= 2;
     }
 
-    if (isSecond && digit > 9) {
-      digit = digit - 9;
-    }
-
-    sum += digit;
-    isSecond = !isSecond;
+    creditCardNumbers.push(digit);
   }
 
-  return sum % 10 === 0;
+  return creditCardNumbers;
+};
+
+const reduceDoubleDigitsAccordingLuhnsAlgorithm = (numbers: number[]) => {
+  const doubleThreshold = 9;
+
+  numbers.forEach((number, position) => {
+    if (number > doubleThreshold) {
+      return (numbers[position] -= doubleThreshold);
+    }
+    return number;
+  });
+};
+
+const validateLuhnsAlgorithm = (creditCardNumber: string): boolean => {
+  const luhnsModul = 10;
+
+  const processedCreditCardNumbers =
+    doubleDigitsAccordingLuhnsAlgorithm(creditCardNumber);
+
+  reduceDoubleDigitsAccordingLuhnsAlgorithm(processedCreditCardNumbers);
+
+  const sumCreditCardNumber = processedCreditCardNumbers.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+  );
+
+  return sumCreditCardNumber % luhnsModul === 0;
 };
 
 const validateExpiryDate = (expiryDate: string): boolean => {
   const [month, year] = expiryDate.split('/').map(Number);
-  const expiry = new Date(year + 2000, month);
+  const absoluteYearValue = 2000;
+  const expiry = new Date(year + absoluteYearValue, month);
   const now = new Date();
 
   return now < expiry;
