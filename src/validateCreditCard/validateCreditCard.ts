@@ -2,6 +2,7 @@ export interface ErrorsStructure {
   lengthError?: string;
   luhnsError?: string;
   expiryDateError?: string;
+  networkError?: string;
 }
 
 const doubleDigitsAccordingLuhnsAlgorithm = (number: string): number[] => {
