@@ -10,13 +10,12 @@ describe('GIVEN a validate password function', () => {
       expect(() => validatePassword(123 as unknown as string)).toThrow(
         'Expected a string.',
       );
-      expect(validatePassword('string')).toBe(typeof 'string');
     });
 
     test('THEN it should has at least 8 characters', () => {
-      expect(validatePassword('mypass')).toBe({
+      expect(validatePassword('mypass')).toEqual({
         isValid: false,
-        errorMessage: 'Password must be at least 8 characters',
+        errorMessage: ['Password must be at least 8 characters'],
       });
     });
   });
