@@ -18,5 +18,12 @@ describe('GIVEN a validate password function', () => {
         errorMessage: ['Password must be at least 8 characters'],
       });
     });
+
+    test('THEN it should contain at least 2 numbers', () => {
+      expect(validatePassword('mypassword1')).toEqual({
+        isValid: false,
+        errorMessage: ['Password must contain at least 2 numbers'],
+      });
+    });
   });
 });
