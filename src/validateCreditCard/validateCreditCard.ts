@@ -5,9 +5,19 @@ export interface ErrorsStructure {
   networkError?: string;
 }
 
-const doubleDigitsAccordingLuhnsAlgorithm = (number: string): number[] => {
+enum CardNetwork {
+  AmericanExpress = 3,
+  Visa = 4,
+  MasterCardType2 = 2,
+  MasterCardType5 = 5,
+  DinersClub = 6,
+}
+
+const doubleDigitsAccordingLuhnsAlgorithm = (
+  creditCardNumber: string,
+): number[] => {
   const creditCardNumbers: number[] = [];
-  const reverseNumbers: string[] = number.split('').reverse();
+  const reverseNumbers: string[] = creditCardNumber.split('').reverse();
 
   for (let position = 0; position < reverseNumbers.length; position += 1) {
     let digit = +reverseNumbers[position];
@@ -22,12 +32,14 @@ const doubleDigitsAccordingLuhnsAlgorithm = (number: string): number[] => {
   return creditCardNumbers;
 };
 
-const reduceDoubleDigitsAccordingLuhnsAlgorithm = (numbers: number[]) => {
+const reduceDoubleDigitsAccordingLuhnsAlgorithm = (
+  creditCardNumbers: number[],
+) => {
   const doubleThreshold = 9;
 
-  numbers.forEach((number, position) => {
+  creditCardNumbers.forEach((number, position) => {
     if (number > doubleThreshold) {
-      return (numbers[position] -= doubleThreshold);
+      return (creditCardNumbers[position] -= doubleThreshold);
     }
     return number;
   });
@@ -58,10 +70,21 @@ const validateExpiryDate = (expiryDate: string): boolean => {
   return now < expiry;
 };
 
+const validateNetwork = (creditCardNumber: string) => {
+  const numberToCheck = +creditCardNumber.charAt(0);
+
+  if (!(numberToCheck in CardNetwork)) {
+    return false;
+  }
+
+  return true;
+};
+
 const validateCreditCard = (creditCardNumber: string, expiryDate: string) => {
   const errors: ErrorsStructure = {};
   const isLuhnValid = validateLuhnsAlgorithm(creditCardNumber);
   const isExpiryDateValid = validateExpiryDate(expiryDate);
+  const isNetworkValid = validateNetwork(creditCardNumber);
 
   if (creditCardNumber.length < 16) {
     errors.lengthError = 'The card must have at least 16 digits';
@@ -73,6 +96,11 @@ const validateCreditCard = (creditCardNumber: string, expiryDate: string) => {
 
   if (!isExpiryDateValid) {
     errors.expiryDateError = 'The card must have a valid expiration date';
+  }
+
+  if (!isNetworkValid) {
+    errors.networkError =
+      'The card must be from one of the following networks: Visa, Mastercard, American Express or Diners Club';
   }
 
   const isValid = Object.keys(errors).length === 0;

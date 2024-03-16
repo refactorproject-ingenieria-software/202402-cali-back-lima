@@ -2,7 +2,7 @@ import validateCreditCard from './validateCreditCard';
 
 describe('Given a validateCreditCard function', () => {
   const validExpiryDate = '12/24';
-  const validcreditCardNumber = '1234412345689783';
+  const validCreditCardNumber = '42344123456897385';
 
   test('It should be defined', () => {
     expect(validateCreditCard).toBeDefined();
@@ -10,19 +10,17 @@ describe('Given a validateCreditCard function', () => {
 
   describe('When it receives a credit card number with 16 digits', () => {
     test('Then it should return that the credit card is valid', () => {
-      const validcreditCardNumber = '1789372997456783';
-
       const expectedResult = { isValid: true };
 
       expect(
-        validateCreditCard(validcreditCardNumber, validExpiryDate).isValid,
+        validateCreditCard(validCreditCardNumber, validExpiryDate).isValid,
       ).toStrictEqual(expectedResult.isValid);
     });
   });
 
   describe('When it receives a credit card number with less than 16 digits', () => {
     test('Then it should return that the credit card is invalid and an error message', () => {
-      const shortCreditCardNumber = '1233';
+      const nonValidLength = '1233';
       const errorMessages = 'The card must have at least 16 digits';
 
       const expectedResult = {
@@ -31,15 +29,14 @@ describe('Given a validateCreditCard function', () => {
       };
 
       expect(
-        validateCreditCard(shortCreditCardNumber, validExpiryDate).errors
-          .lengthError,
+        validateCreditCard(nonValidLength, validExpiryDate).errors.lengthError,
       ).toStrictEqual(expectedResult.errors.lengthError);
     });
   });
 
   describe('When it receives a credit card number that is not valid according to the Luhn algorithm', () => {
     test('Then it should return that the credit card is not valid according to the Luhn algorithm', () => {
-      const nonValidCreditCardNumber = '8910423685127395';
+      const nonValidLuhnsAlorithm = '22442234524323535334';
       const errorMessage =
         'The card is not valid according to the Luhn algorithm';
 
@@ -49,7 +46,7 @@ describe('Given a validateCreditCard function', () => {
       };
 
       expect(
-        validateCreditCard(nonValidCreditCardNumber, validExpiryDate).errors
+        validateCreditCard(nonValidLuhnsAlorithm, validExpiryDate).errors
           .luhnsError,
       ).toStrictEqual(expectedResult.errors.luhnsError);
     });
@@ -67,7 +64,7 @@ describe('Given a validateCreditCard function', () => {
       };
 
       const { isValid, errors } = validateCreditCard(
-        validcreditCardNumber,
+        validCreditCardNumber,
         nonValidExpiryDate,
       );
 
@@ -83,13 +80,14 @@ describe('Given a validateCreditCard function', () => {
       const expectedResult = { isValid: true };
 
       expect(
-        validateCreditCard(validcreditCardNumber, validExpiryDate).isValid,
+        validateCreditCard(validCreditCardNumber, validExpiryDate).isValid,
       ).toStrictEqual(expectedResult.isValid);
     });
   });
 
   describe('When it receives a credit card that it is not Visa, Mastercard, American Express or Diners Club', () => {
     test('Then it should return an error message equal to "The card must be from one of the following networks: Visa, Mastercard, American Express or Diners Club"', () => {
+      const nonValidNetwork = '12344123456789734';
       const nonValidNetworkErrorMessage =
         'The card must be from one of the following networks: Visa, Mastercard, American Express or Diners Club';
 
@@ -99,12 +97,12 @@ describe('Given a validateCreditCard function', () => {
       };
 
       const { isValid, errors } = validateCreditCard(
-        validcreditCardNumber,
+        nonValidNetwork,
         validExpiryDate,
       );
 
       expect(isValid).toStrictEqual(expectedResult.isValid);
-      expect(errors.expiryDateError).toStrictEqual(
+      expect(errors.networkError).toStrictEqual(
         expectedResult.errors.networkError,
       );
     });
