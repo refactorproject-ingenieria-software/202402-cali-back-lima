@@ -12,5 +12,12 @@ describe('GIVEN a validate password function', () => {
       );
       expect(validatePassword('string')).toBe(typeof 'string');
     });
+
+    test('THEN it should has at least 8 characters', () => {
+      expect(validatePassword('mypass')).toBe({
+        isValid: false,
+        errorMessage: 'Password must be at least 8 characters',
+      });
+    });
   });
 });
