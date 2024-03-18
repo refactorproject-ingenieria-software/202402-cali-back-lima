@@ -1,5 +1,6 @@
-import { Controller, Get, Headers } from '@nestjs/common';
+import { Controller, Get, Headers, Body, Post } from '@nestjs/common';
 import axios from 'axios';
+import validateCreditCard from './validateCreditCard/validateCreditCard';
 
 @Controller()
 export class AppController {
@@ -26,5 +27,12 @@ export class AppController {
     } catch (error) {
       throw error;
     }
+  }
+
+  @Post('validate-credit-card')
+  validateCreditCard(
+    @Body() body: { creditCardNumber: string; expiryDate: string },
+  ) {
+    return validateCreditCard(body.creditCardNumber, body.expiryDate);
   }
 }
