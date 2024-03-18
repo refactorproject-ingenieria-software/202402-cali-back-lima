@@ -1,5 +1,4 @@
-const validateNumbersRegex = /.*\d.*\d.*/;
-
+const validateNumbersRegex = /(?:.*\d){2,}/;
 export const validations = [
   {
     isValid: (password: string) => password.length >= 8,
