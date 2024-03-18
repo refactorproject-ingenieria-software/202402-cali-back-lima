@@ -9,6 +9,7 @@ describe('GIVEN a validate password function', () => {
   });
 
   describe('WHEN it recives a parameter', () => {
+    const validationResult = validatePassword('mypassword1');
     test('THEN it should be a string', () => {
       expect(() => validatePassword(123 as unknown as string)).toThrow(
         'Expected a string.',
@@ -24,7 +25,6 @@ describe('GIVEN a validate password function', () => {
     });
 
     test('THEN it should contain at least 2 numbers', () => {
-      const validationResult = validatePassword('mypassword1');
       expect(validationResult.isValid).toBe(false);
       expect(validationResult.errorMessage).toContain(
         'Password must contain at least 2 numbers',
@@ -32,10 +32,15 @@ describe('GIVEN a validate password function', () => {
     });
 
     test('THEN it should contain at least 1 capital letter', () => {
-      const validationResult = validatePassword('mypassword1');
       expect(validationResult.isValid).toBe(false);
       expect(validationResult.errorMessage).toContain(
         'Password must contain at least one capital letter',
+      );
+    });
+    test('THEN it should contain at least 1 special character', () => {
+      expect(validationResult.isValid).toBe(false);
+      expect(validationResult.errorMessage).toContain(
+        'Password must contain at least one special character',
       );
     });
   });
