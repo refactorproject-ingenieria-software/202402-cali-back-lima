@@ -1,3 +1,5 @@
+import { validations } from './validatePassword.const';
+
 interface ValidatePassword {
   isValid: boolean;
   errorMessage: string[];
@@ -9,26 +11,15 @@ const isValidateTypeofPassword = (password: string) => {
 
 export const validatePassword = (password: string): ValidatePassword => {
   isValidateTypeofPassword(password);
-  const validateNumbersRegex = /.*\d.*\d.*/;
-  const validations = [
-    {
-      isValid: password.length >= 8,
-      errorMessage: 'Password must be at least 8 characters',
-    },
-    {
-      isValid: validateNumbersRegex.test(password),
-      errorMessage: 'Password must contain at least 2 numbers',
-    },
-  ];
-  const result: ValidatePassword = validations.reduce(
+
+  return validations.reduce<ValidatePassword>(
     (accumulate, value) => {
-      if (!value.isValid) {
+      if (!value.isValid(password)) {
         accumulate.isValid = false;
         accumulate.errorMessage.push(value.errorMessage);
       }
       return accumulate;
     },
-    { isValid: true as boolean, errorMessage: [] as string[] },
+    { isValid: true, errorMessage: [] },
   );
-  return result;
 };
