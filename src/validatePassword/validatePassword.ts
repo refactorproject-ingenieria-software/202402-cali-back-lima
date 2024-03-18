@@ -1,6 +1,6 @@
 import { validations } from './validatePassword.const';
 
-interface ValidatePassword {
+export interface ValidatePassword {
   isValid: boolean;
   errorMessage: string[];
 }
