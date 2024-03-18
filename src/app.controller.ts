@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Post } from '@nestjs/common';
+import validateCreditCard from './validateCreditCard/validateCreditCard';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('validate-credit-card')
+  validateCreditCard(
+    @Body() body: { creditCardNumber: string; expiryDate: string },
+  ) {
+    return validateCreditCard(body.creditCardNumber, body.expiryDate);
   }
 }
