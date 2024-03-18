@@ -13,4 +13,9 @@ export const validations = [
     isValid: (password: string) => /[A-Z]/.test(password),
     errorMessage: 'Password must contain at least one capital letter',
   },
+  {
+    isValid: (password: string) =>
+      /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+    errorMessage: 'Password must contain at least one special character',
+  },
 ];
