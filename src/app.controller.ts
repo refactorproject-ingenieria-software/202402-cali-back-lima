@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import {
   ValidatePassword,
   validatePassword,
@@ -18,6 +24,10 @@ export class AppController {
 
   @Post('validate-password')
   validatePassword(@Body() body: { password: string }): ValidatePassword {
-    return validatePassword(body.password);
+    try {
+      return validatePassword(body.password);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
