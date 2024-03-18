@@ -16,17 +16,19 @@ describe('GIVEN a validate password function', () => {
     });
 
     test('THEN it should has at least 8 characters', () => {
-      expect(validatePassword('mypass')).toContain({
-        isValid: false,
-        errorMessage: ['Password must be at least 8 characters'],
-      });
+      const validationResult = validatePassword('mypass');
+      expect(validationResult.isValid).toBe(false);
+      expect(validationResult.errorMessage).toContain(
+        'Password must be at least 8 characters',
+      );
     });
 
     test('THEN it should contain at least 2 numbers', () => {
-      expect(validatePassword('mypassword1')).toEqual({
-        isValid: false,
-        errorMessage: ['Password must contain at least 2 numbers'],
-      });
+      const validationResult = validatePassword('mypassword1');
+      expect(validationResult.isValid).toBe(false);
+      expect(validationResult.errorMessage).toContain(
+        'Password must contain at least 2 numbers',
+      );
     });
   });
 });
