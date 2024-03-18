@@ -15,7 +15,7 @@ export class AppController {
   }
 
   @Post('validate-password')
-  validatePassword(@Body('password') password: string): ValidatePassword {
-    return validatePassword(password);
+  validatePassword(@Body() body: { password: string }): ValidatePassword {
+    return validatePassword(body.password);
   }
 }
