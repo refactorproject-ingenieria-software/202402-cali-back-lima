@@ -30,5 +30,13 @@ describe('GIVEN a validate password function', () => {
         'Password must contain at least 2 numbers',
       );
     });
+
+    test('THEN it should contain at least 1 capital letter', () => {
+      const validationResult = validatePassword('mypassword1');
+      expect(validationResult.isValid).toBe(false);
+      expect(validationResult.errorMessage).toContain(
+        'Password must contain at least one capital letter',
+      );
+    });
   });
 });
