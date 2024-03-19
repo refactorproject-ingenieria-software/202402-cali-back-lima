@@ -1,11 +1,12 @@
-const validateNumbersRegex = /(?:.*\d){2,}/;
-export const validations = [
+import { Validations } from './validatePassword.types';
+
+export const validations: Validations[] = [
   {
     isValid: (password: string) => password.length >= 8,
     errorMessage: 'Password must be at least 8 characters',
   },
   {
-    isValid: (password: string) => validateNumbersRegex.test(password),
+    isValid: (password: string) => /(?:.*\d){2,}/.test(password),
     errorMessage: 'Password must contain at least 2 numbers',
   },
   {

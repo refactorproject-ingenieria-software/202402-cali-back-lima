@@ -1,25 +1,32 @@
 import { validations } from './validatePassword.const';
-
-export interface ValidatePassword {
-  isValid: boolean;
-  errorMessage: string[];
-}
+import { ValidatePasswordResult, Validations } from './validatePassword.types';
 
 const ensurePasswordIsString = (password: string) => {
   if (typeof password !== 'string') throw new Error('Expected a string.');
 };
 
-export const validatePassword = (password: string): ValidatePassword => {
-  ensurePasswordIsString(password);
+const generateValidation = (
+  password: string,
+): ((
+  validationResult: ValidatePasswordResult,
+  currentValidation: Validations,
+) => ValidatePasswordResult) => {
+  return (validationResult, currentValidation) => {
+    if (!currentValidation.isValid(password)) {
+      validationResult.isValid = false;
+      validationResult.errorMessage.push(currentValidation.errorMessage);
+    }
+    return validationResult;
+  };
+};
 
-  return validations.reduce<ValidatePassword>(
-    (accumulate, value) => {
-      if (!value.isValid(password)) {
-        accumulate.isValid = false;
-        accumulate.errorMessage.push(value.errorMessage);
-      }
-      return accumulate;
+export const validatePassword = (password: string): ValidatePasswordResult => {
+  ensurePasswordIsString(password);
+  return validations.reduce<ValidatePasswordResult>(
+    generateValidation(password),
+    {
+      isValid: true,
+      errorMessage: [],
     },
-    { isValid: true, errorMessage: [] },
   );
 };

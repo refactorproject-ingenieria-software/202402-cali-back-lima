@@ -5,11 +5,9 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import {
-  ValidatePassword,
-  validatePassword,
-} from './validatePassword/validatePassword';
 import validateCreditCard from './validateCreditCard/validateCreditCard';
+import { ValidatePasswordResult } from './validatePassword/validatePassword.types';
+import { validatePassword } from './validatePassword/validatePassword';
 
 @Controller()
 export class AppController {
@@ -23,7 +21,7 @@ export class AppController {
   }
 
   @Post('validate-password')
-  validatePassword(@Body() body: { password: string }): ValidatePassword {
+  validatePassword(@Body() body: { password: string }): ValidatePasswordResult {
     try {
       return validatePassword(body.password);
     } catch (error) {
